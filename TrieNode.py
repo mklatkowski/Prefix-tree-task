@@ -1,5 +1,5 @@
 from typing import List, Optional
-
+import time
 
 class TrieNode:
     def __init__(self) -> None:
@@ -13,36 +13,36 @@ class Trie:
 
     def insert(self, word: str) -> None:
         word = word.lower()
-        current_char: TrieNode = self.root
-        for c in word:
-            if c not in current_char.children:
-                current_char.children[c] = TrieNode()
-            current_char = current_char.children[c]
-        current_char.isFinish = True
+        current_node: TrieNode = self.root
+        for character in word:
+            if character not in current_node.children:
+                current_node.children[character] = TrieNode()
+            current_node = current_node.children[character]
+        current_node.isFinish = True
 
     def words(self, prefix: str) -> List[str]:
         prefix = prefix.lower()
         words_with_prefix: List[str] = self.words_with_prefix(prefix)
-        return [prefix + word for word in words_with_prefix]
+        return words_with_prefix
 
-    def words_with_prefix(self, prefix: str, current_char: Optional[TrieNode] = None) -> List[str]:
-        if current_char is None:
-            current_char = self.root
-        if len(prefix) == 0:
-            return self.collect_suffixes(current_char)
+    def words_with_prefix(self, prefix: str, index = 0, current_node: Optional[TrieNode] = None) -> List[str]:
+        if current_node is None:
+            current_node = self.root
+        if index == len(prefix):
+            return ["".join((prefix,word)) for word in self.collect_suffixes(current_node)]
         else:
-            first_char = prefix[0]
-            if first_char in current_char.children:
-                return self.words_with_prefix(prefix[1:], current_char.children[first_char])
+            first_char = prefix[index]
+            if first_char in current_node.children:
+                return self.words_with_prefix(prefix, index + 1,  current_node.children[first_char])
             else:
                 return []
 
-    def collect_suffixes(self, current_char: TrieNode, prefix: str = "") -> List[str]:
+    def collect_suffixes(self, current_node: TrieNode, prefix: str = "") -> List[str]:
         words: List[str] = []
-        if current_char.isFinish:
+        if current_node.isFinish:
             words.append(prefix)
-        for char, node in current_char.children.items():
-            words.extend(self.collect_suffixes(node, prefix + char))
+        for char, node in current_node.children.items():
+            words.extend(self.collect_suffixes(node, "".join((prefix,char))))
         return words
 
 
@@ -54,4 +54,5 @@ if __name__ == '__main__':
 
     prefix: str = "app"
     print("Słowa z prefixem '{}':".format(prefix))
+
     print(trie.words(prefix))
