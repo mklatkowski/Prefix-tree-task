@@ -30,7 +30,7 @@ class Trie:
         if current_node is None:
             current_node = self.root
         if index == len(prefix):
-            return ["".join((prefix,word)) for word in self.collect_suffixes(current_node)]
+            return [f'{prefix}{word}' for word in self.collect_suffixes(current_node)]
         else:
             first_char = prefix[index]
             if first_char in current_node.children:
@@ -43,5 +43,5 @@ class Trie:
         if current_node.isFinish:
             words.append(prefix)
         for char, node in current_node.children.items():
-            words.extend(self.collect_suffixes(node, "".join((prefix,char))))
+            words.extend(self.collect_suffixes(node, f'{prefix}{char}'))
         return words
