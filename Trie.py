@@ -1,5 +1,4 @@
 from typing import List, Optional
-import time
 
 class TrieNode:
     def __init__(self) -> None:

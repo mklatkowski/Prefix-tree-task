@@ -1,5 +1,6 @@
 import unittest
-from Trie import Trie
+from typing import List
+from Trie import Trie, TrieNode
 
 class TestTrie(unittest.TestCase):
 
@@ -13,7 +14,7 @@ class TestTrie(unittest.TestCase):
     def test_words_with_prefix(self):
         trie = Trie()
 
-        words = ["app", "apple", "ban", "banana"]
+        words: List[str] = ["app", "apple", "ban", "banana"]
 
         for word in words:
             trie.insert(word)
@@ -45,7 +46,7 @@ class TestTrie(unittest.TestCase):
     def test_words_with_unified_prefix(self):
         trie = Trie()
 
-        words = ["app", "apple", "ban", "banana"]
+        words: List[str] = ["app", "apple", "ban", "banana"]
 
         for word in words:
             trie.insert(word)
@@ -76,34 +77,30 @@ class TestTrie(unittest.TestCase):
     def test_collect_suffixes(self):
         trie = Trie()
 
-        words = ["a", "app", "apple", "ban", "banana"]
+        words: List[str] = ["ban", "banana", "c", "car", "carpet"]
 
         for word in words:
             trie.insert(word)
 
-        current_node = trie.root
-        #Now, we have prefix "" (prefix of every word)
+        current_node: TrieNode = trie.root
 
-        self.assertEqual(trie.collect_suffixes(current_node), ["a", "app", "apple", "ban", "banana"])
+        self.assertEqual(trie.collect_suffixes(current_node), ["ban", "banana", "c", "car", "carpet"])
+
+        current_node = current_node.children['c']
+
+        self.assertEqual(trie.collect_suffixes(current_node), ["", "ar", "arpet"])
 
         current_node = current_node.children['a']
-        #Now, we have prefix "a"
+        current_node = current_node.children['r']
 
-        self.assertEqual(trie.collect_suffixes(current_node), ["", "pp", "pple"])
+        self.assertEqual(trie.collect_suffixes(current_node), ["", "pet"])
 
         current_node = current_node.children['p']
-        current_node = current_node.children['p']
-        #Now, we have prefix "app"
 
-        self.assertEqual(trie.collect_suffixes(current_node), ["", "le"])
-
-        current_node = current_node.children['l']
-        #Now, we have prefix "appl"
-
-        self.assertEqual(trie.collect_suffixes(current_node), ["e"])
+        self.assertEqual(trie.collect_suffixes(current_node), ["et"])
 
         current_node = current_node.children['e']
-        #Now, we have prefix "apple"
+        current_node = current_node.children['t']
 
         self.assertEqual(trie.collect_suffixes(current_node), [""])
 
