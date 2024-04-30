@@ -10,11 +10,11 @@ def insert(word):
     trie.insert(word)
 
 def get_words_with_prefix(prefix):
-    return trie.words(prefix)
+    return trie.words_with_prefix(prefix)
 
 if __name__ == "__main__":
 
-    #Here insert words to the dictionary, f.e:
+    #Here insert words to the dictionary, f.e.:
 
     insert("car")
     insert("carpet")
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     insert_list(["car", "carpet", "java", "javascript", "internet"])
 
-    #Here check a list of the autocopleted words with given prefix, f.e:
+    #Here check a list of the autocompleted words with given prefix, f.e.:
 
     print(get_words_with_prefix("c"))
     print(get_words_with_prefix("car"))

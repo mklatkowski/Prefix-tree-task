@@ -21,12 +21,12 @@ class Trie:
             current_node = current_node.children[character]
         current_node.isFinish = True
 
-    def words(self, prefix: str) -> List[str]:
+    def words_with_prefix(self, prefix: str) -> List[str]:
         prefix = prefix.lower()
-        words_with_prefix: List[str] = self.words_with_prefix(prefix)
+        words_with_prefix: List[str] = self.words_with_unified_prefix(prefix)
         return words_with_prefix
 
-    def words_with_prefix(self, prefix: str, index = 0, current_node: Optional[TrieNode] = None) -> List[str]:
+    def words_with_unified_prefix(self, prefix: str, index = 0, current_node: Optional[TrieNode] = None) -> List[str]:
         if current_node is None:
             current_node = self.root
         if index == len(prefix):
@@ -34,7 +34,7 @@ class Trie:
         else:
             first_char = prefix[index]
             if first_char in current_node.children:
-                return self.words_with_prefix(prefix, index + 1,  current_node.children[first_char])
+                return self.words_with_unified_prefix(prefix, index + 1, current_node.children[first_char])
             else:
                 return []
 
